@@ -228,7 +228,7 @@ public class GameLogic implements PlayableLogic{
             }
     }
     public boolean theKingIsSurrunder (){
-        Position p = map[get_LastPosition.get_x()][get_LastPosition().get_y()].get_LastPosition();
+        Position p = (King) King.get_LastPosition();
         if(map[p.get_x()+1][p.get_y()] != null && map[p.get_x()+1][p.get_y()].getType().equals(attacker)){
             if(map[p.get_x()-1][p.get_y()] != null && map[p.get_x()-1][p.get_y()].getType().equals(attacker)){
                 if(map[p.get_x()][p.get_y()+1] != null && map[p.get_x()][p.get_y()+1].getType().equals(attacker)) {
