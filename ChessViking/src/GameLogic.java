@@ -1,5 +1,6 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GameLogic implements PlayableLogic{
 
@@ -8,8 +9,9 @@ public class GameLogic implements PlayableLogic{
 
     ConcretePlayer defender = new ConcretePlayer(true);// this player own the king
     ConcretePlayer attacker = new ConcretePlayer(false);// need to play first
+    private Position _kingPosition = new Position(5,5);//A field that represents a position of the king, with an initialization of a starting position
 
-   /* ArrayList <ArrayList<Position>> defencePosition = new ArrayList<>();
+    /* ArrayList <ArrayList<Position>> defencePosition = new ArrayList<>();
     ArrayList <ArrayList<Position>> attackPosition = new ArrayList<>();*/
     public GameLogic (){
         startGame();
@@ -105,7 +107,8 @@ public class GameLogic implements PlayableLogic{
                 map[b.get_x()][b.get_y()].getAllPositions();
                 System.out.println("]");
                 eat(b);
-
+                if (getPieceAtPosition(b).getType().equals("♔")){_kingPosition = new Position(b.get_x(),b.get_y());}
+                //if (getPieceAtPosition(b).getType().equals("♔")){map[_kingPosition.get_x()][_kingPosition.get_y()] = map[b.get_x()][b.get_y()];}
                 return true;
             }
             if (a.get_y() == b.get_y()) {
@@ -123,6 +126,7 @@ public class GameLogic implements PlayableLogic{
                 map[b.get_x()][b.get_y()].getAllPositions();
                 System.out.println("]");
                 eat(b);
+                if (getPieceAtPosition(b).getType().equals("♔")){_kingPosition = new Position(b.get_x(),b.get_y());}
                 //System.out.println(((Pawn)getPieceAtPosition(b)).get_ID() + ":" + ((Pawn)getPieceAtPosition(b)).get_kills());
 
                 return true;
@@ -227,8 +231,10 @@ public class GameLogic implements PlayableLogic{
                 }
             }
     }
-    public boolean theKingIsSurrunder (){
-        Position p = (King) King.get_LastPosition();
+   /* public boolean theKingIsSurrunder (){
+        //TODO find the place where is the king
+        Position p = _kingPosition;
+
         if(map[p.get_x()+1][p.get_y()] != null && map[p.get_x()+1][p.get_y()].getType().equals(attacker)){
             if(map[p.get_x()-1][p.get_y()] != null && map[p.get_x()-1][p.get_y()].getType().equals(attacker)){
                 if(map[p.get_x()][p.get_y()+1] != null && map[p.get_x()][p.get_y()+1].getType().equals(attacker)) {
@@ -238,8 +244,60 @@ public class GameLogic implements PlayableLogic{
                     }
                 }
             }
+        if(p.get_x() == 0){
+            if(map[p.get_x()+1][p.get_y()] != null && map[p.get_x()+1][p.get_y()].getType().equals(attacker)){
+                if(map[p.get_x()][p.get_y()+1] != null && map[p.get_x()][p.get_y()+1].getType().equals(attacker)) {
+                    if(map[p.get_x()][p.get_y()-1] != null && map[p.get_x()][p.get_y()-1].getType().equals(attacker)){
+                            return true;
+                    }
+                }
+            }
+        }
+        if(p.get_x() == 10){
+            if(map[p.get_x()][p.get_y()+1] != null && map[p.get_x()][p.get_y()+1].getType().equals(attacker)){
+                if(map[p.get_x()-1][p.get_y()] != null && map[p.get_x()-1][p.get_y()].getType().equals(attacker)){
+                    if(map[p.get_x()][p.get_y()-1] != null && map[p.get_x()][p.get_y()-1].getType().equals(attacker)){
+                            return true;
+                    }
+                }
+            }
+        }
+        if(p.get_y() == 0){
+            if(map[p.get_x()+1][p.get_y()] != null && map[p.get_x()+1][p.get_y()].getType().equals(attacker)){
+                if(map[p.get_x()-1][p.get_y()] != null && map[p.get_x()-1][p.get_y()].getType().equals(attacker)){
+                    if(map[p.get_x()][p.get_y()+1] != null && map[p.get_x()][p.get_y()+1].getType().equals(attacker)) {
+                            return true;
+                    }
+                }
+            }
+        }
+        if(p.get_y() == 10){
+            if(map[p.get_x()+1][p.get_y()] != null && map[p.get_x()+1][p.get_y()].getType().equals(attacker)){
+                if(map[p.get_x()-1][p.get_y()] != null && map[p.get_x()-1][p.get_y()].getType().equals(attacker)){
+                    if(map[p.get_x()][p.get_y()-1] != null && map[p.get_x()][p.get_y()-1].getType().equals(attacker)){
+                        return true;
+                    }
+                }
+            }
+        }
 
     return false;
+    }*/
+   public boolean theKingIsSurrunder (){
+       //TODO find the place where is the king
+    if(_kingPosition.get_x() > 0 && _kingPosition.get_x() < 10 && _kingPosition.get_y() >0 && _kingPosition.get_y() <10) {
+        if (map[_kingPosition.get_x() + 1][_kingPosition.get_y()] != null && map[_kingPosition.get_x() + 1][_kingPosition.get_y()].getType().equals(attacker)) {
+            if (map[_kingPosition.get_x() - 1][_kingPosition.get_y()] != null && map[_kingPosition.get_x() - 1][_kingPosition.get_y()].getType().equals(attacker)) {
+                if (map[_kingPosition.get_x()][_kingPosition.get_y() + 1] != null && map[_kingPosition.get_x()][_kingPosition.get_y() + 1].getType().equals(attacker)) {
+                    if (map[_kingPosition.get_x()][_kingPosition.get_y() - 1] != null && map[_kingPosition.get_x()][_kingPosition.get_y() - 1].getType().equals(attacker)) {
+                        return true;
+                    }
+                }
+            }
+        }
     }
+       return false;
+   }
+
 
 }
