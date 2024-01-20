@@ -18,7 +18,7 @@ public class King extends ConcretePiece{
     }// white king
     @Override
     public Player getOwner() {return super.getOwner();}
-    public Position get_LastPosition() {return _positions.get(_positions.size()-1);}//Getting the last member
+    public Position get_LastPosition() {return _positions.get(_positions.size() -1);}//Getting the last member
     //public void AddPosition(Position p){_positions.add(p);}//Adding a member to arraylist
     //public void getAllPositions (){for (Position position : _positions){System.out.print("(" + position.get_x() +","+ position.get_y() + ")");}}
 }
