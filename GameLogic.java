@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GameLogic implements PlayableLogic{
@@ -7,6 +8,10 @@ public class GameLogic implements PlayableLogic{
 
     ConcretePlayer defender = new ConcretePlayer(true);// this player own the king
     ConcretePlayer attacker = new ConcretePlayer(false);// need to play first
+
+    ArrayList <Position> forCompare4 = new ArrayList<>();
+
+
     ConcretePiece[] attackPositions = {
             new Pawn(attacker, "A1", 1, new Position(3, 0)),
             new Pawn(attacker, "A2", 2, new Position(4, 0)),
@@ -148,7 +153,18 @@ public class GameLogic implements PlayableLogic{
                 if(!getPieceAtPosition(b).getType().equals("♔")){System.out.println(((Pawn)getPieceAtPosition(b)).get_ID() + ":" + ((Pawn)getPieceAtPosition(b)).get_kills());}
 
                 map[b.get_x()][b.get_y()].add_square(b.distance(a,b));
-                System.out.println(map[b.get_x()][b.get_y()].get_square());
+                System.out.println(map[b.get_x()][b.get_y()].get_ID() + ":" + map[b.get_x()][b.get_y()].get_square()+ " " + "squares");
+
+                //attackPosition.get(map[i][j].get_number()).add(new Position(i,j))
+
+                if(forCompare4.contains(b)){b.addString(map[b.get_x()][b.get_y()].get_ID());}
+                if(!forCompare4.contains(b)){forCompare4.add(b);b.addString(map[b.get_x()][b.get_y()].get_ID());}
+
+                for (int i = 0; i <= forCompare4.size()-1; i++) {
+                    System.out.print("(" + forCompare4.get(i).get_x() + "," + forCompare4.get(i).get_y() + ")" + ":");
+                        forCompare4.get(i).getAllString();
+                    System.out.println();
+                }
 
                 return true;
             }
@@ -167,9 +183,19 @@ public class GameLogic implements PlayableLogic{
                 map[b.get_x()][b.get_y()].getAllPositions();
                 System.out.println("]");
                 eat(b);
-                if(!getPieceAtPosition(b).getType().equals("♔")){System.out.println(((Pawn)getPieceAtPosition(b)).get_ID() + ":" + ((Pawn)getPieceAtPosition(b)).get_kills());}
+                if(!getPieceAtPosition(b).getType().equals("♔")){System.out.println(((Pawn)getPieceAtPosition(b)).get_ID() + ":" + ((Pawn)getPieceAtPosition(b)).get_kills()+ " " + "kills" );}
+
                 map[b.get_x()][b.get_y()].add_square(b.distance(a,b));
-                System.out.println(map[b.get_x()][b.get_y()].get_square());
+                System.out.println(map[b.get_x()][b.get_y()].get_ID() + ":" + map[b.get_x()][b.get_y()].get_square()+ " " + "squares");
+
+                if(forCompare4.contains(b)){b.addString(map[b.get_x()][b.get_y()].get_ID());}
+                if(!forCompare4.contains(b)){forCompare4.add(b);b.addString(map[b.get_x()][b.get_y()].get_ID());}
+
+                for (int i = 0; i < forCompare4.size(); i++) {
+                    System.out.print("(" + forCompare4.get(i).get_x() + "," + forCompare4.get(i).get_y() + ")" + ":");
+                    forCompare4.get(i).getAllString();
+                    System.out.println();
+                }
 
                 return true;
             }
@@ -215,7 +241,15 @@ public class GameLogic implements PlayableLogic{
            }
            for (int i = 0; i < 74; i++) {System.out.print("*");}
            System.out.println();
+
+           defender.setIfYouWinGetTrue(true);
            sortByKills();
+
+           for (int i = 0; i < 74; i++) {System.out.print("*");}
+           System.out.println();
+
+           sortBySquare();
+
            for (int i = 0; i < 74; i++) {System.out.print("*");}
            System.out.println();
 
@@ -250,7 +284,15 @@ public class GameLogic implements PlayableLogic{
            }
            for (int i = 0; i < 74; i++) {System.out.print("*");}
            System.out.println();
+
+           attacker.setIfYouWinGetTrue(true);
            sortByKills();
+
+           for (int i = 0; i < 74; i++) {System.out.print("*");}
+           System.out.println();
+
+           sortBySquare();
+
            for (int i = 0; i < 74; i++) {System.out.print("*");}
            System.out.println();
 
@@ -264,7 +306,23 @@ public class GameLogic implements PlayableLogic{
     @Override
     public boolean isSecondPlayerTurn() {return !flagTurns;}//The use of this function is to transfer turns
     @Override
-    public void reset() {startGame(); flagTurns = false;}
+    public void reset() {startGame(); flagTurns = false;
+        for (int i = 0; i < attackPositions.length; i++) {
+            attackPositions[i]._square = 0;
+            ((Pawn) attackPositions[i]).set_kills(0);
+            //TODO remove _position
+        }
+        for (int i = 0; i < defencePositions.length; i++) {
+            defencePositions[i]._square = 0;
+            if(!defencePositions[i].getType().equals("♔")){
+                ((Pawn) defencePositions[i]).set_kills(0);
+                //TODO remove _position
+               // defencePositions[i]._positions.removeAll(Position);
+            }
+        }
+        defender.setIfYouWinGetTrue(false);
+        attacker.setIfYouWinGetTrue(false);
+    }
     @Override
     public void undoLastMove() {}
     @Override
@@ -442,7 +500,23 @@ public void sortByKills() {
     for (int i = 0; i < copy.length; i++) {
         if (copy[i].get_kills() == 0) {continue;}
         System.out.print(copy[i].get_ID() + ":");
-        System.out.println(copy[i].get_kills());
+        System.out.println(copy[i].get_kills()+ " " + "kills");
+        }
+    }
+    public void sortBySquare() {
+        ConcretePiece[] copy = new ConcretePiece[37];
+        for (int i = 0; i < attackPositions.length; i++) {
+            copy[i] = attackPositions[i];
+        }
+        for (int i = 0; i < defencePositions.length; i++) {
+            copy[24 + i] = defencePositions[i];
+        }
+
+        Arrays.sort(copy, new CmparatoBySquare());
+        for (int i = 0; i < copy.length; i++) {
+            if (copy[i].get_square() == 0) {continue;}
+            System.out.print(copy[i].get_ID() + ":");
+            System.out.println(copy[i].get_square()+ " " + "squares");
         }
     }
 

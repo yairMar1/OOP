@@ -7,12 +7,19 @@ public class CompareByKills implements Comparator <Pawn>{
 
         int ans2  = a.get_number() - b.get_number();
         if(ans2 > 0){return 1;}
-        //else if (ans2 < 0){return -1;}
-        return -1;
-
-        //int ans3 = !b.getOwner().equals(a.getOwner());
+        else if (ans2 < 0){return -1;}
 
 
+        int ans3 =  a.get_number() - b.get_number();
+        if(a.getOwner().isIfYouWinGetTrue()==true){
+
+            ans3 = -1;
+            return ans3;
+        }
+        else{
+            ans3 = 1;
+            return ans3;
+        }
 
     }
 }
