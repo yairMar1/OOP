@@ -23,12 +23,11 @@ public abstract class ConcretePiece implements Piece{
     public String get_ID() {return _ID;}
     public Position get_LastPosition() {return _positions.get(_positions.size() -1);}//Getting the last member
     public void AddPosition(Position p){_positions.add(p);}//Adding a member to arraylist
-   // public void getAllPositions (){for (Position position : _positions) {System.out.print("(" + position.get_x() +","+ position.get_y() + ")");}}
     public void getAllPositions (){
         for (int i = 0; i < _positions.size()-1; i++) {
-            System.out.print("(" + _positions.get(i).get_x() +","+ _positions.get(i).get_y() + ")" + ",");
+            System.out.print("(" + _positions.get(i).get_x() +","+ " " + _positions.get(i).get_y() + ")" + "," + " ");
         }
-        System.out.print("(" + _positions.get(_positions.size()-1).get_x() +","+ _positions.get(_positions.size()-1).get_y() + ")");
+        System.out.print("(" + _positions.get(_positions.size()-1).get_x() +"," + " " + _positions.get(_positions.size()-1).get_y() + ")");
     }
     public void add_square(int square) {this._square += square;}
     public int get_square() {return _square;}

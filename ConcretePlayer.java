@@ -1,8 +1,8 @@
 import java.util.Objects;
 
-public class ConcretePlayer implements Player{//player one = true = defender.
+public class ConcretePlayer implements Player{
     private int Wins;
-    private boolean _WhichPlayer;
+    private boolean _WhichPlayer;//player one = true = defender.
     private boolean _ifYouWinGetTrue;//A value that will change if your team wins
 
     public ConcretePlayer (boolean player){

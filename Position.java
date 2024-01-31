@@ -4,11 +4,13 @@ import java.util.Objects;
 public class Position {
     private int _x;
     private int _y;
-    public ArrayList <String> _howManyPiecesWalkHere = new ArrayList<>();
+    public ArrayList <String> _howManyPiecesWalkHere;
     //constructor that takes initial coordinates (x, y) to create a position object with a specified starting point.
     public Position (int x, int y){
         _x = x;
-        _y = y;}
+        _y = y;
+        _howManyPiecesWalkHere = new ArrayList<>();
+    }
 
     //functions
     //public Position getPosition(){return _x,_y;}
@@ -21,11 +23,11 @@ public class Position {
         if(a.get_x()==b.get_x()){return Math.abs(b.get_y() - a.get_y());}
         return Math.abs(b.get_x() - a.get_x());
     }
-    //This function was created, so that we can detect if a tool has already passed through this slot.
-    // If so, don't add it, otherwise you should add another walk tool in this slot
+    /**This function was created, so that we can detect if a tool has already passed through this slot.
+     If so, don't add it, otherwise you should add another walk tool in this slot*/
     public void addString (String s){if (!_howManyPiecesWalkHere.contains(s)){_howManyPiecesWalkHere.add(s);}}
     public void getAllString (){
-        for (int i = 0; i <= _howManyPiecesWalkHere.size()-1; i++) {
+        for (int i = 0; i < _howManyPiecesWalkHere.size(); i++) {
             System.out.print("(" + _howManyPiecesWalkHere.get(i) + ")" + ",");
         }
     }
@@ -40,5 +42,4 @@ public class Position {
     }
     @Override
     public int hashCode() {return Objects.hash(_x, _y);}
-
 }
