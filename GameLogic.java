@@ -19,7 +19,7 @@ public class GameLogic implements PlayableLogic{
             new Pawn(attacker, "A4", 4, new Position(6, 0)),
             new Pawn(attacker, "A5", 5, new Position(7, 0)),
             new Pawn(attacker, "A6", 6, new Position(5, 1)),
-            new Pawn(attacker, "A7", 7, new Position(3, 0)),
+            new Pawn(attacker, "A7", 7, new Position(0, 3)),
             new Pawn(attacker, "A9", 9, new Position(0, 4)),
             new Pawn(attacker, "A11", 11, new Position(0, 5)),
             new Pawn(attacker, "A15", 15, new Position(0, 6)),
