@@ -105,7 +105,7 @@ public class GameLogic implements PlayableLogic{
        map[7][10] = attackPositions[22];
        map[5][9]  = attackPositions[23];
 
-           for (int i = 0; i <= 10; i++) {//Applying the strings (eg A3) of those players who are on a certain position
+           for (int i = 0; i <= 10; i++) {//Applying the strings (e.g. A3) of those players who are on a certain position
                for (int j = 0; j <= 10; j++) {
                   if(map[i][j]!=null){
                       Position p = new Position(i,j);
@@ -114,9 +114,6 @@ public class GameLogic implements PlayableLogic{
                   }
                }
            }
-
-
-
     }
 
     /**The `move` function represents the movement logic for a chess piece on a game board. It checks various
@@ -141,21 +138,18 @@ public class GameLogic implements PlayableLogic{
                 int max = Math.max(a.get_y(), b.get_y());
                 for (int i = min + 1; i < max; i++) {if (map[a.get_x()][i] != null) {return false;} }
 
-                map[b.get_x()][b.get_y()] = map[a.get_x()][a.get_y()];//row update
+                map[b.get_x()][b.get_y()] = map[a.get_x()][a.get_y()];//column update
                 map[a.get_x()][a.get_y()] = null;
                     flagTurns = !flagTurns;//change of turn
 
                 map[b.get_x()][b.get_y()].AddPosition(b);
-                /*System.out.print(map[b.get_x()][b.get_y()].get_ID() + ":");
-                System.out.print("[");
-                map[b.get_x()][b.get_y()].getAllPositions();
-                System.out.println("]");*/
+
                 eat(b);
-                //if(!getPieceAtPosition(b).getType().equals("♔")){System.out.println(((Pawn)getPieceAtPosition(b)).get_ID() + ":" + ((Pawn)getPieceAtPosition(b)).get_kills());}
 
                 map[b.get_x()][b.get_y()].add_square(b.distance(a,b));
-                //System.out.println(map[b.get_x()][b.get_y()].get_ID() + ":" + map[b.get_x()][b.get_y()].get_square()+ " " + "squares");
 
+                //An attempt to put a player's Position and a string (which distinguishes each player, for example A6)
+                // into Position if he has not already walked there
                 boolean apperance = false;
                 for (int i = 0; i < forCompare4.size(); i++) {
                     if(b.get_x() == forCompare4.get(i).get_x() && b.get_y() == forCompare4.get(i).get_y()) {
@@ -165,12 +159,6 @@ public class GameLogic implements PlayableLogic{
                 }
                 if(apperance == false){forCompare4.add(b);b.addString(map[b.get_x()][b.get_y()].get_ID());}
 
-               /* for (int i = 0; i < forCompare4.size(); i++) {
-                    System.out.print("(" + forCompare4.get(i).get_x() + "," + forCompare4.get(i).get_y() + ")" + ":");
-                        forCompare4.get(i).getAllString();
-                    System.out.println();
-                }*/
-
                 isGameFinished();
                 return true;
             }
@@ -179,21 +167,18 @@ public class GameLogic implements PlayableLogic{
                 int max = Math.max(a.get_x(), b.get_x());
                 for (int i = min + 1; i < max; i++) {if (map[i][a.get_y()] != null) {return false;}}
 
-                map[b.get_x()][b.get_y()] = map[a.get_x()][a.get_y()];//column update
+                map[b.get_x()][b.get_y()] = map[a.get_x()][a.get_y()];//row update
                 map[a.get_x()][a.get_y()] = null;
                     flagTurns = !flagTurns;//change of turn
 
                 map[b.get_x()][b.get_y()].AddPosition(b);
-                /*System.out.print(map[b.get_x()][b.get_y()].get_ID() + ":");
-                System.out.print("[");
-                map[b.get_x()][b.get_y()].getAllPositions();
-                System.out.println("]");*/
+
                 eat(b);
-                //if(!getPieceAtPosition(b).getType().equals("♔")){System.out.println(((Pawn)getPieceAtPosition(b)).get_ID() + ":" + ((Pawn)getPieceAtPosition(b)).get_kills()+ " " + "kills" );}
 
                 map[b.get_x()][b.get_y()].add_square(b.distance(a,b));
-                //System.out.println(map[b.get_x()][b.get_y()].get_ID() + ":" + map[b.get_x()][b.get_y()].get_square()+ " " + "squares");
 
+                //An attempt to put a player's Position and a string (which distinguishes each player, for example A6)
+                // into Position if he has not already walked there
                 boolean apperance = false;
                 for (int i = 0; i < forCompare4.size(); i++) {
                     if(b.get_x()==(forCompare4.get(i).get_x()) && b.get_y()==(forCompare4.get(i).get_y())) {
@@ -203,11 +188,6 @@ public class GameLogic implements PlayableLogic{
                 }
                 if(apperance == false){forCompare4.add(b);b.addString(map[b.get_x()][b.get_y()].get_ID());}
 
-                /*for (int i = 0; i < forCompare4.size(); i++) {
-                    System.out.print("(" + forCompare4.get(i).get_x() + "," + forCompare4.get(i).get_y() + ")" + ":");
-                    forCompare4.get(i).getAllString();
-                    System.out.println();
-                }*/
                 isGameFinished();
 
                 return true;
@@ -339,22 +319,41 @@ public class GameLogic implements PlayableLogic{
         if(!isSecondPlayerTurn() && isGameFinished()){attacker.addWins();}
         if(isSecondPlayerTurn() & isGameFinished()){defender.addWins();}
 
-        //Initializing the game by initializing the builder, and all the variables added during the game
-        startGame();
+        //startGame();
         flagTurns = false;
-        for (int i = 0; i < attackPositions.length; i++) {
+        for (int i = 0; i < attackPositions.length; i++) {//Reset all the variables of a player on the attacker's side
             attackPositions[i]._square = 0;
             ((Pawn) attackPositions[i]).set_kills(0);
             //TODO remove _position
+            attackPositions[i]._positions.clear();
         }
-        for (int i = 0; i < defencePositions.length; i++) {
+        for (int i = 0; i < defencePositions.length; i++) {//Reset all player variables on the defender side
             defencePositions[i]._square = 0;
             if(!defencePositions[i].getType().equals("♔")){
                 ((Pawn) defencePositions[i]).set_kills(0);
                 //TODO remove _position
-               // defencePositions[i]._positions.removeAll(Position);
+                defencePositions[i]._positions.clear();
             }
         }
+        //Reset all the names of the different tools, which walked in a certain location
+        for (int i = 0; i < forCompare4.size(); i++) {
+            forCompare4.get(i)._howManyPiecesWalkHere.clear();
+        }
+        forCompare4.clear();//Resetting the places where tools have walked
+
+        //Initializing the game by initializing the builder, and all the variables added during the game
+        startGame();
+
+        //Initializing the starting position in the arraylist of the positions where each player was, for example: A6: [(5, 1)]
+        for (int i = 0; i <= 10 ; i++) {
+            for (int j = 0; j <= 10 ; j++) {
+                if (map[i][j] != null) {
+                    map[i][j].AddPosition(new Position(i, j));
+                }
+            }
+        }
+
+
         defender.setIfYouWinGetTrue(false);
         attacker.setIfYouWinGetTrue(false);
     }
